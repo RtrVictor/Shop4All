@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'Airpods Wireless Bluetooth Headphones',
     image: '/images/airpods.jpg',
     description:
@@ -13,7 +12,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '2',
     name: 'iPhone 11 Pro 256GB Memory',
     image: '/images/phone.jpg',
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: '3',
     name: 'Cannon EOS 80D DSLR Camera',
     image: '/images/camera.jpg',
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '4',
     name: 'Sony Playstation 4 Pro White Version',
     image: '/images/playstation.jpg',
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '5',
     name: 'Logitech G-Series Gaming Mouse',
     image: '/images/mouse.jpg',
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: '6',
     name: 'Amazon Echo Dot 3rd Generation',
     image: '/images/alexa.jpg',
     description:
@@ -76,6 +70,30 @@ const products = [
     countInStock: 0,
     rating: 4,
     numReviews: 12,
+  },
+  {
+    name: 'Black and Orange Skull Fingerless Gloves',
+    image: '/images/glove.jpg',
+    description:
+      'Helping to keep your hands snug in all their stripey glory, these fingerless gloves are available in a variety of different colours, and skull types (hence forth known as Pirate Skull, Cheery Skull and Mutant skull).',
+    brand: 'Docblack',
+    category: 'Accessories',
+    price: 2.99,
+    countInStock: 100,
+    rating: 3.5,
+    numReviews: 25,
+  },
+  {
+    name: 'Woman leather handbag',
+    image: '/images/handbag.jpg',
+    description:
+      ' We use the soft high quality PU leather with heavy duty zipper hardware for this bag, very smooth and soft to the touch, comfortable, safe, fashionable and durable, odorless and high-end. When you touch the bag, the lining is durable and smooth, not easy to wear or tear',
+    brand: 'HAYNER',
+    category: 'Accessories',
+    price: 99.99,
+    countInStock: 8,
+    rating: 4.3,
+    numReviews: 30,
   },
 ]
 
