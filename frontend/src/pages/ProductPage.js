@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   Row,
@@ -8,23 +8,23 @@ import {
   Card,
   Button,
   ListGroupItem,
+  Spinner,
 } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { singleProduct } from '../actions/productActions'
 
 const ProductPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const [product, setProduct] = useState({})
+  const productSingle = useSelector((state) => state.productSingle)
+  const { loading, product, error } = productSingle
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await axios.get(`/api/products/${id}`)
-      setProduct(response.data)
-    }
-    fetchProduct()
-  }, [id])
+    dispatch(singleProduct(id))
+  }, [id, dispatch])
 
   const goBack = () => {
     navigate(-1)
@@ -32,7 +32,13 @@ const ProductPage = () => {
 
   return (
     <div>
-      {product ? (
+      {loading ? (
+        <Spinner animation='border' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </Spinner>
+      ) : error ? (
+        <div>{error}</div>
+      ) : (
         <div>
           <button onClick={goBack} className='btn btn-light my-3'>
             Go Back
@@ -117,10 +123,6 @@ const ProductPage = () => {
               </Card>
             </Col>
           </Row>
-        </div>
-      ) : (
-        <div>
-          Loading...<i className='fa-solid fa-rotate-right'></i>
         </div>
       )}
     </div>
