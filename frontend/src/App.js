@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
+import ShoppingCartPage from './pages/ShoppingCartPage'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<HomePage />} exact />
             <Route path='/product/:id' element={<ProductPage />} />
+            <Route path='/cart/:id?' element={<ShoppingCartPage />} />
           </Routes>
         </Container>
       </div>

@@ -19,7 +19,7 @@ export const listOfProducts = () => async (dispatch) => {
     })
   }
 }
-
+//A single product
 export const singleProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: 'PRODUCTSINGLE_REQUEST' })

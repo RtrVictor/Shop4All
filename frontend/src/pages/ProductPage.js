@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   Row,
@@ -9,12 +9,15 @@ import {
   Button,
   ListGroupItem,
   Spinner,
+  FormControl,
 } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux'
 import { singleProduct } from '../actions/productActions'
 
 const ProductPage = () => {
+  const [quantity, setQuantity] = useState(1)
+
   const { id } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -28,6 +31,10 @@ const ProductPage = () => {
 
   const goBack = () => {
     navigate(-1)
+  }
+
+  const addToShop = () => {
+    navigate(`/cart/${id}?quantity=${quantity}`)
   }
 
   return (
@@ -84,6 +91,28 @@ const ProductPage = () => {
                       </Col>
                     </Row>
                   </ListGroupItem>
+                  {product.countInStock > 0 ? (
+                    <ListGroupItem>
+                      <Row>
+                        <Col>Quantity selected:</Col>
+                        <Col>
+                          <FormControl
+                            as='select'
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (index) => (
+                                <option key={index + 1} value={index + 1}>
+                                  {index + 1}
+                                </option>
+                              )
+                            )}
+                          </FormControl>
+                        </Col>
+                      </Row>
+                    </ListGroupItem>
+                  ) : null}
                   <ListGroupItem>
                     <Row>
                       <Col className='d-flex justify-content-center'>
@@ -94,6 +123,7 @@ const ProductPage = () => {
                               product.countInStock === 0 ? 'btn-dark' : ''
                             }`}
                             type='button'
+                            onClick={addToShop}
                           >
                             Add to shopping cart
                           </Button>
