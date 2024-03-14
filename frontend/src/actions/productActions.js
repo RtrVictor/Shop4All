@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-//Redux-thunk is for function inside function (async() inside listOfProducts)
+//Redux-thunk is for function inside function(callback) (async() inside listOfProducts)
+//listOfProducts outer function synchronous and async(dispatch) inner function asynchronous
+
+//Async = makes a function return a promise
+//Await = makes an async function wait for a promise
 
 //The whole list of products
 export const listOfProducts = () => async (dispatch) => {

@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+//Async = makes a function return a promise
+//Await = makes an async function wait for a promise
+
 export const addToShoppingCart =
   (id, quantity) => async (dispatch, getState) => {
     const { data } = await axios.get(`/api/products/${id}`)
