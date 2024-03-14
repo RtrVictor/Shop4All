@@ -25,3 +25,21 @@ export const addToShoppingCart =
       JSON.stringify(getState().shoppingCart.shoppingCartProducts)
     )
   }
+
+export const removeFromShoppingCart = (id) => async (dispatch, getState) => {
+  dispatch({ type: 'SHOPPINGCART_REMOVE', payload: id })
+  //Update localStorage after removing an item
+  localStorage.setItem(
+    'shoppingCartProducts',
+    JSON.stringify(getState().shoppingCart.shoppingCartProducts)
+  )
+}
+
+export const decreaseQuantity = (id) => async (dispatch, getState) => {
+  dispatch({ type: 'DECREASE_QUANTITY', payload: id })
+  //Update localStorage after decreasing the quantity
+  localStorage.setItem(
+    'shoppingCartProducts',
+    JSON.stringify(getState().shoppingCart.shoppingCartProducts)
+  )
+}

@@ -1,7 +1,11 @@
 import React from 'react'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToShoppingCart } from '../actions/shoppingCartActions'
+import { Row, Col, ListGroup, Image, Form, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import {
+  addToShoppingCart,
+  removeFromShoppingCart,
+  decreaseQuantity,
+} from '../actions/shoppingCartActions'
 
 const ProductShoppingCart = ({ cartProduct }) => {
   const dispatch = useDispatch()
@@ -15,6 +19,20 @@ const ProductShoppingCart = ({ cartProduct }) => {
       console.log('MaxValueReached')
     }
   }
+
+  const removeProductQuantity = (e) => {
+    if (cartProduct.quantity > 1) {
+      // Ensure quantity doesn't go below 1
+      dispatch(decreaseQuantity(cartProduct.product))
+    } else {
+      console.log('Quantity already at minimum')
+    }
+  }
+
+  const removeProduct = () => {
+    dispatch(removeFromShoppingCart(cartProduct.product))
+  }
+
   return (
     <div>
       <ListGroup key={cartProduct.product} className='py-2'>
@@ -45,8 +63,12 @@ const ProductShoppingCart = ({ cartProduct }) => {
                 </p>
               </Row>
               <Row>
-                <div className='d-flex flex-row align-items-center'>
-                  <Button className='px-2' variant='link'>
+                <Col className='d-flex flex-row align-items-center'>
+                  <Button
+                    className='px-2'
+                    variant='link'
+                    onClick={(e) => removeProductQuantity(e)}
+                  >
                     <i className='fas fa-minus'></i>
                   </Button>
                   <Form.Control
@@ -65,7 +87,12 @@ const ProductShoppingCart = ({ cartProduct }) => {
                   >
                     <i className='fas fa-plus'></i>
                   </Button>
-                </div>
+                </Col>
+                <Col>
+                  <Button onClick={removeProduct}>
+                    <i className='fa-solid fa-trash'></i>
+                  </Button>
+                </Col>
               </Row>
             </Col>
           </Row>
