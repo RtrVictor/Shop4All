@@ -3,6 +3,7 @@ import express from 'express'
 import connectDB from './configuration/db.js'
 import colors from 'colors'
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import { notFound, errorHandler } from './middleware/customErrorMiddleware.js'
 
 dotenv.config()
@@ -11,13 +12,20 @@ connectDB()
 
 const app = express()
 
+//Accepts json data in the body(body-parse middleware)
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('Api running fast')
 })
 
+//Products
 app.use('/api/products', productRoutes)
-//Custom error
 
+//Users
+app.use('/api/users', userRoutes)
+
+//Custom error
 app.use(notFound)
 app.use(errorHandler)
 

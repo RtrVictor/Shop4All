@@ -16,7 +16,7 @@ const ProductShoppingCart = ({ cartProduct }) => {
         addToShoppingCart(cartProduct.product, Number(cartProduct.quantity + 1))
       )
     } else {
-      console.log('MaxValueReached')
+      alert('MaxValueReached')
     }
   }
 
@@ -25,7 +25,7 @@ const ProductShoppingCart = ({ cartProduct }) => {
       // Ensure quantity doesn't go below 1
       dispatch(decreaseQuantity(cartProduct.product))
     } else {
-      console.log('Quantity already at minimum')
+      alert('Quantity already at minimum')
     }
   }
 
