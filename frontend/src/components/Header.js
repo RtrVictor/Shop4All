@@ -13,6 +13,9 @@ const Header = () => {
   const login = useSelector((state) => state.login)
   const { user } = login
 
+  const updateUserDetails = useSelector((state) => state.updateUserDetails)
+  const { user: updatedUser } = updateUserDetails
+
   const logoutHandler = () => {
     dispatch(logoutUser())
   }
@@ -35,7 +38,8 @@ const Header = () => {
                   title={
                     <span>
                       <i className='fas fa-user px-1'></i>
-                      {user.name}
+
+                      {updatedUser ? updatedUser.name : user.name}
                     </span>
                   }
                   id='username'
