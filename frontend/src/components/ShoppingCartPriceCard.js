@@ -6,7 +6,7 @@ const ShoppingCartPriceCard = ({ shoppingCartProducts }) => {
   const navigate = useNavigate()
 
   const onContinue = () => {
-    navigate('/login?redirect=shipping')
+    navigate('/login?redirect=/shipping')
   }
 
   return (

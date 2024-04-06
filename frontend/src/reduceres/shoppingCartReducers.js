@@ -1,6 +1,6 @@
 //Add/remove a product to shopping cart
 export const shoppingCartReducer = (
-  state = { shoppingCartProducts: [] },
+  state = { shoppingCartProducts: [], deliveryAddress: {} },
   action
 ) => {
   switch (action.type) {
@@ -37,6 +37,16 @@ export const shoppingCartReducer = (
             ? { ...product, quantity: Math.max(product.quantity - 1, 0) } // Decrement quantity
             : product
         ),
+      }
+    case 'DELIVERYADDRESS_ADD':
+      return {
+        ...state,
+        deliveryAddress: action.payload,
+      }
+    case 'PAYMENTMETHOD_ADD':
+      return {
+        ...state,
+        paymentMethod: action.payload,
       }
     default:
       return state

@@ -32,8 +32,20 @@ const userFromLocalStorage = localStorage.getItem('user')
   ? JSON.parse(localStorage.getItem('user'))
   : null
 
+const deliveryAddressFromLocalStorage = localStorage.getItem('deliveryAddress')
+  ? JSON.parse(localStorage.getItem('deliveryAddress'))
+  : null
+
+const paymentMethodFromLocalStorage = localStorage.getItem('paymentMethod')
+  ? JSON.parse(localStorage.getItem('paymentMethod'))
+  : null
+
 const initialState = {
-  shoppingCart: { shoppingCartProducts: shoppingCartProductsFromLocalStorage },
+  shoppingCart: {
+    shoppingCartProducts: shoppingCartProductsFromLocalStorage,
+    deliveryAddress: deliveryAddressFromLocalStorage,
+    paymentMethod: paymentMethodFromLocalStorage,
+  },
   login: { user: userFromLocalStorage },
 }
 const middleware = [thunk]

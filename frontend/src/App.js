@@ -8,6 +8,9 @@ import ShoppingCartPage from './pages/ShoppingCartPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ProfilePage from './pages/ProfilePage'
+import DeliveryPage from './pages/DeliveryPage'
+import PaymentPage from './pages/PaymentPage'
+import ReviewOrderPage from './pages/ReviewOrderPage'
 
 const App = () => {
   return (
@@ -22,6 +25,9 @@ const App = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/shipping' element={<DeliveryPage />} />
+            <Route path='/payment' element={<PaymentPage />} />
+            <Route path='/putOrder' element={<ReviewOrderPage />} />
           </Routes>
         </Container>
       </div>

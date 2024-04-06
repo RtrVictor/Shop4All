@@ -23,3 +23,27 @@
 .shadowbox {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+.special-nav-link {
+  color: #333 !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  background-color: lightblue !important;
+  margin: 0 10px !important;
+  text-decoration: none !important;
+}
+
+.special-nav-link-disabled {
+  color: #333 !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  background-color: lightgray !important;
+  margin: 0 10px !important;
+  text-decoration: none !important;
+}
+
+.separating-line {
+  border-top: 5px solid black !important;
+  margin: 10px 0 !important;
+  border-radius: 5px;
+}

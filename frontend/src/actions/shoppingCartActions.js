@@ -43,3 +43,15 @@ export const decreaseQuantity = (id) => async (dispatch, getState) => {
     JSON.stringify(getState().shoppingCart.shoppingCartProducts)
   )
 }
+
+export const addDeliveryAddress = (data) => async (dispatch) => {
+  dispatch({ type: 'DELIVERYADDRESS_ADD', payload: data })
+  //Update localStorage after adding an address
+  localStorage.setItem('deliveryAddress', JSON.stringify(data))
+}
+
+export const addPaymentMethod = (data) => async (dispatch) => {
+  dispatch({ type: 'PAYMENTMETHOD_ADD', payload: data })
+  //Update localStorage after adding a payment method
+  localStorage.setItem('paymentMethod', JSON.stringify(data))
+}
