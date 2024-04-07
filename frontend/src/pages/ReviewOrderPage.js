@@ -1,10 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { React, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import ProgressBar from '../components/ProgressBar'
+import { createOrderAction } from '../actions/orderActions'
 
 const ReviewOrderPage = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const shoppingCart = useSelector((state) => state.shoppingCart)
   const { shoppingCartProducts, deliveryAddress, paymentMethod } = shoppingCart
 
@@ -12,25 +16,47 @@ const ReviewOrderPage = () => {
   const { user } = login
 
   //Prices:
-  shoppingCartProducts.TotalProductPrice = shoppingCartProducts.reduce(
-    (acc, product) => acc + product.quantity * product.price,
-    0
-  )
+  shoppingCartProducts.TotalProductPrice = Number(
+    shoppingCartProducts.reduce(
+      (acc, product) => acc + product.quantity * product.price,
+      0
+    )
+  ).toFixed(2)
   shoppingCartProducts.ShippingPrice =
     shoppingCartProducts.TotalProductPrice < 100 ? 20 : 0
 
-  shoppingCartProducts.TaxPrice = Number(
+  shoppingCartProducts.taxPrice = Number(
     0.1 * shoppingCartProducts.TotalProductPrice
   ).toFixed(2)
 
   shoppingCartProducts.TotalPrice = Number(
     Number(shoppingCartProducts.TotalProductPrice) +
       Number(shoppingCartProducts.ShippingPrice) +
-      Number(shoppingCartProducts.TaxPrice)
+      Number(shoppingCartProducts.taxPrice)
   ).toFixed(2)
 
+  const createOrder = useSelector((state) => state.createOrder)
+  const { success, order, error } = createOrder
+
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`)
+    }
+    //eslint-disable-next-line
+  }, [navigate, success])
+
   const placeOrder = () => {
-    console.log('Merge')
+    dispatch(
+      createOrderAction({
+        orderProducts: shoppingCart.shoppingCartProducts,
+        deliveryAddress: shoppingCart.deliveryAddress,
+        paymentMethod: shoppingCart.paymentMethod,
+        productsPrice: shoppingCartProducts.TotalProductsPrice,
+        taxPrice: shoppingCartProducts.taxPrice,
+        shippingPrice: shoppingCartProducts.ShippingPrice,
+        totalPrice: shoppingCartProducts.TotalPrice,
+      })
+    )
   }
   return (
     <div>
@@ -105,7 +131,7 @@ const ReviewOrderPage = () => {
               )}
             </ListGroup.Item>
             <ListGroup.Item>
-              Tax: {`$${shoppingCartProducts.TaxPrice}`}
+              Tax: {`$${shoppingCartProducts.taxPrice}`}
             </ListGroup.Item>
             <ListGroup.Item>
               Total: {`$${shoppingCartProducts.TotalPrice}`}
@@ -120,6 +146,7 @@ const ReviewOrderPage = () => {
                 Place your order
               </Button>
             </ListGroup.Item>
+            {error && <div variant='danger'>{error}</div>}
           </ListGroup>
         </Col>
       </Row>
