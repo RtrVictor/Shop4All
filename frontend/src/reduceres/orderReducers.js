@@ -10,3 +10,19 @@ export const createOrderReducer = (state = {}, action) => {
       return state
   }
 }
+
+export const detailsOrderReducer = (
+  state = { loading: true, order: [], shippingAddress: {} },
+  action
+) => {
+  switch (action.type) {
+    case 'DETAILSORDER_REQUEST':
+      return { ...state, loading: true }
+    case 'DETAILSORDER_SUCCESS':
+      return { loading: false, order: action.payload }
+    case 'DETAILSORDER_FAIL':
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}

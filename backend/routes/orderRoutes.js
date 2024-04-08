@@ -42,4 +42,25 @@ router.route('/').post(
   })
 )
 
+//Description: Get order details by id
+//Route: Get /api/orders/:id
+//Access: Private
+router.route('/:id').get(
+  protect,
+  asyncHandler(async (req, res) => {
+    //Want order and also the name and email of the user
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'name email'
+    )
+
+    if (order) {
+      res.json(order)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+  })
+)
+
 export default router
