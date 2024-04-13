@@ -42,6 +42,17 @@ router.route('/').post(
   })
 )
 
+//Description: Show orders on profile
+//Route: GET /api/orders/userorders
+//Access: Private
+router.route('/userorders').get(
+  protect,
+  asyncHandler(async (req, res) => {
+    const userOrders = await Order.find({ user: req.user._id })
+    res.json(userOrders)
+  })
+)
+
 //Description: Get order details by id
 //Route: Get /api/orders/:id
 //Access: Private
@@ -56,6 +67,34 @@ router.route('/:id').get(
 
     if (order) {
       res.json(order)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+  })
+)
+
+//Description: Change the order to paied
+//Route: PUT /api/orders/:id/payment
+//Access: Private
+router.route('/:id/payment').put(
+  protect,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order) {
+      order.isPaid = true
+      order.paidAt = Date.now()
+      //From paypal:
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.payer.email_address,
+      }
+
+      const paidOrder = await order.save()
+      res.json(paidOrder)
     } else {
       res.status(404)
       throw new Error('Order not found')

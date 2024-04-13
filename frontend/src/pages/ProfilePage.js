@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col, Spinner } from 'react-bootstrap'
+import { Form, Button, Row, Col, Spinner, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { detailsUser, updateDetailsUser } from '../actions/userActions'
+import { loggedUserOrderAction } from '../actions/orderActions'
 
 const ProfilePage = () => {
   const navigate = useNavigate()
@@ -23,12 +25,20 @@ const ProfilePage = () => {
   const updateUserDetails = useSelector((state) => state.updateUserDetails)
   const { user: updatedUser, success } = updateUserDetails
 
+  const loggedUserOrder = useSelector((state) => state.loggedUserOrder)
+  const {
+    loading: loadingUserOrder,
+    userOrder,
+    error: errorUserOrder,
+  } = loggedUserOrder
+
   useEffect(() => {
     if (!loggedInUser) {
       navigate(`/login`)
     } else {
       if (!user.name) {
         dispatch(detailsUser('profile'))
+        dispatch(loggedUserOrderAction())
       } else {
         if (updatedUser) {
           setName(updatedUser.name)
@@ -120,8 +130,95 @@ const ProfilePage = () => {
           </Row>
         </Form>
       </Row>
+      <div className='separating-line'></div>
       <Row md={9}>
-        <h2>Here will be orders</h2>
+        <h2>Here are your orders</h2>
+        {loadingUserOrder ? (
+          <Spinner animation='border' role='status'>
+            <span className='visually-hidden'>Loading...</span>
+          </Spinner>
+        ) : errorUserOrder ? (
+          <div className='alert-danger py-3 text-center'>{errorUserOrder}</div>
+        ) : (
+          <Table striped hover>
+            <thead>
+              <th>Order ID</th>
+              <th>Ordered on</th>
+              <th>Bill to Name</th>
+              <th>Deliver to Name</th>
+              <th>Subtotal</th>
+              <th>Status</th>
+              <th>Details</th>
+            </thead>
+            {
+              <tbody>
+                {userOrder &&
+                  userOrder.map((order) => (
+                    <tr>
+                      <td>{order._id}</td>
+                      <td>{order.createdAt.substring(0, 10)}</td>
+                      <td>{loggedInUser.name}</td>
+                      <td>{loggedInUser.name}</td>
+                      <td>{order.totalPrice}</td>
+                      <td>
+                        {order.isPaid ? (
+                          <span
+                            style={{
+                              borderRadius: '0.25rem',
+                              boxShadow: '0 0 0.5rem rgba(0, 0, 0, 0.1)',
+                              padding: '0.25rem',
+                            }}
+                            className='bg-success '
+                          >
+                            Paid
+                          </span>
+                        ) : (
+                          <span
+                            style={{
+                              borderRadius: '0.25rem',
+                              boxShadow: '0 0 0.5rem rgba(0, 0, 0, 0.1)',
+                              padding: '0.25rem',
+                            }}
+                            className='bg-danger'
+                          >
+                            Not paid
+                          </span>
+                        )}{' '}
+                        {order.isDelivered ? (
+                          <span
+                            style={{
+                              borderRadius: '0.25rem',
+                              boxShadow: '0 0 0.5rem rgba(0, 0, 0, 0.1)',
+                              padding: '0.25rem',
+                            }}
+                            className='bg-success'
+                          >
+                            Delivered
+                          </span>
+                        ) : (
+                          <span
+                            style={{
+                              borderRadius: '0.25rem',
+                              boxShadow: '0 0 0.5rem rgba(0, 0, 0, 0.1)',
+                              padding: '0.25rem',
+                            }}
+                            className='bg-danger'
+                          >
+                            Not Delivered
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <LinkContainer to={`/order/${order._id}`}>
+                          <Button>View</Button>
+                        </LinkContainer>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            }
+          </Table>
+        )}
       </Row>
     </div>
   )

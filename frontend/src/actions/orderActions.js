@@ -54,3 +54,63 @@ export const detailsOrderAction = (id) => async (dispatch, getState) => {
     })
   }
 }
+
+export const payOrderAction =
+  (id, paymentResult) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: 'PAYORDER_REQUEST' })
+
+      const {
+        login: { user },
+      } = getState()
+
+      const configuration = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+
+      const { data } = await axios.put(
+        `/api/orders/${id}/payment`,
+        paymentResult,
+        configuration
+      )
+      dispatch({ type: 'PAYORDER_SUCCESS', payload: data })
+    } catch (error) {
+      dispatch({
+        type: 'PAYORDER_FAIL',
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.response,
+      })
+    }
+  }
+
+export const loggedUserOrderAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'USERORDER_REQUEST' })
+
+    const {
+      login: { user },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+
+    const { data } = await axios.get('/api/orders/userorders', configuration)
+    dispatch({ type: 'USERORDER_SUCCESS', payload: data })
+  } catch (error) {
+    dispatch({
+      type: 'USERORDER_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}

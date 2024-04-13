@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToShoppingCart } from '../actions/shoppingCartActions'
@@ -8,7 +8,7 @@ import ShoppingCartPriceCard from '../components/ShoppingCartPriceCard'
 
 const ShoppingCartPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
+
   const location = useLocation()
   const dispatch = useDispatch()
   const quantity = location.search ? Number(location.search.split('=')[1]) : 1

@@ -29,10 +29,19 @@ app.use('/api/users', userRoutes)
 //Orders
 app.use('/api/orders', orderRoutes)
 
+//Paypal route
+app.get('/api/config/paypal/payment', (req, res) => {
+  const paypalClientId = process.env.PAYPAL_CID
+  if (paypalClientId) {
+    res.send(paypalClientId)
+  } else {
+    res.status(500).send('PayPal client ID not found')
+  }
+})
+
 //Custom error
 app.use(notFound)
 app.use(errorHandler)
-
 const PORT = process.env.PORT || 5000
 
 app.listen(
