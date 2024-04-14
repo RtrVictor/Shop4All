@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button, Row, Col, Spinner, Table } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { detailsUser, updateDetailsUser } from '../actions/userActions'
-import { loggedUserOrderAction } from '../actions/orderActions'
+import {
+  loggedUserOrderAction,
+  detailsOrderAction,
+} from '../actions/orderActions'
 
 const ProfilePage = () => {
   const navigate = useNavigate()
@@ -58,6 +60,11 @@ const ProfilePage = () => {
     } else {
       setMessage('Passwords are not identical')
     }
+  }
+
+  const viewOrder = (id) => {
+    dispatch(detailsOrderAction(id))
+    navigate(`/order/${id}`)
   }
 
   return (
@@ -142,19 +149,21 @@ const ProfilePage = () => {
         ) : (
           <Table striped hover>
             <thead>
-              <th>Order ID</th>
-              <th>Ordered on</th>
-              <th>Bill to Name</th>
-              <th>Deliver to Name</th>
-              <th>Subtotal</th>
-              <th>Status</th>
-              <th>Details</th>
+              <tr>
+                <th>Order ID</th>
+                <th>Ordered on</th>
+                <th>Bill to Name</th>
+                <th>Deliver to Name</th>
+                <th>Subtotal</th>
+                <th>Status</th>
+                <th>Details</th>
+              </tr>
             </thead>
             {
               <tbody>
                 {userOrder &&
                   userOrder.map((order) => (
-                    <tr>
+                    <tr key={order._id}>
                       <td>{order._id}</td>
                       <td>{order.createdAt.substring(0, 10)}</td>
                       <td>{loggedInUser.name}</td>
@@ -209,9 +218,14 @@ const ProfilePage = () => {
                         )}
                       </td>
                       <td>
-                        <LinkContainer to={`/order/${order._id}`}>
-                          <Button>View</Button>
-                        </LinkContainer>
+                        {
+                          // <LinkContainer to={`/order/${order._id}`}>
+                          //   <Button>View</Button>
+                          // </LinkContainer>
+                          <Button onClick={() => viewOrder(order._id)}>
+                            View
+                          </Button>
+                        }
                       </td>
                     </tr>
                   ))}
