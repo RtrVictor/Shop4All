@@ -154,4 +154,49 @@ router.route('/:id').delete(
   })
 )
 
+//Description: Get a user by id
+//Route: Get /api/users/:id
+//Access: Private (need token)/Admin (needs admin)
+router.route('/:id').get(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const singleUser = await User.findById(req.params.id).select('-password')
+    if (singleUser) {
+      res.json(singleUser)
+    } else {
+      res.status(404)
+      throw new Error('User not found')
+    }
+  })
+)
+
+//Description: Update the users profile as an admin
+//Route: PUT /api/users/:id
+//Access: Private (need token)/Admin(needs admin)
+router.route('/:id').put(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.isAdmin = req.body.isAdmin
+
+      const updatedUser = await user.save()
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      })
+    } else {
+      res.status(404)
+      throw new Error(`The user doesn't exist`)
+    }
+  })
+)
+
 export default router

@@ -170,11 +170,46 @@ export const deleteUserAction = (id) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.delete(`/api/users/${id}`, configuration)
+    await axios.delete(`/api/users/${id}`, configuration)
     dispatch({ type: 'DELETEUSER_SUCCESS' })
   } catch (error) {
     dispatch({
       type: 'DELETEUSER_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}
+
+export const updateUserAction = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'UPDATEUSER_REQUEST' })
+
+    const {
+      login: { user: loggedInUser },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loggedInUser.token}`,
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/users/${user._id}`,
+      user,
+      configuration
+    )
+
+    dispatch({ type: 'UPDATEUSER_SUCCESS' })
+    //Pass updated user so state remains correct
+    dispatch({ type: 'USERDETAILS_SUCCESS', payload: data })
+  } catch (error) {
+    dispatch({
+      type: 'UPDATEUSER_FAIL',
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -13,6 +13,7 @@ import {
   updateUserDetailsReducer,
   getAllUsersReducer,
   deleteUserReducer,
+  updateUserReducer,
 } from './reduceres/userReducers'
 import {
   createOrderReducer,
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   loggedUserOrder: loggedUserOrderReducer,
   getAllUsers: getAllUsersReducer,
   deleteUser: deleteUserReducer,
+  updateUser: updateUserReducer,
 })
 const shoppingCartProductsFromLocalStorage = localStorage.getItem(
   'shoppingCartProducts'

@@ -13,6 +13,7 @@ import PaymentPage from './pages/PaymentPage'
 import ReviewOrderPage from './pages/ReviewOrderPage'
 import OrderPage from './pages/OrderPage'
 import AdminPage from './pages/AdminPage'
+import EditUserPage from './pages/EditUserPage'
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
             <Route path='/putOrder' element={<ReviewOrderPage />} />
             <Route path='/order/:id' element={<OrderPage />} />
             <Route path='/admin/manager' element={<AdminPage />} />
+            <Route path='/user/:id/edit' element={<EditUserPage />} />
           </Routes>
         </Container>
       </div>
