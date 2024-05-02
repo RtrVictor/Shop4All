@@ -47,3 +47,11 @@
   margin: 10px 0 !important;
   border-radius: 5px;
 }
+
+.green-icon {
+  color: green;
+}
+
+.red-icon {
+  color: red;
+}

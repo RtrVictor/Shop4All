@@ -35,6 +35,7 @@ export const logoutUser = () => async (dispatch) => {
   dispatch({ type: 'USERLOGOUT' })
   dispatch({ type: 'USERDETAILS_RESET' })
   dispatch({ type: 'USERORDER_RESET' })
+  dispatch({ type: 'USERALL_RESET' })
 }
 
 export const registerUser = (name, email, password) => async (dispatch) => {
@@ -71,7 +72,7 @@ export const registerUser = (name, email, password) => async (dispatch) => {
 export const detailsUser = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: 'USERDETAILS_REQUEST' })
-
+    //Getting token
     const {
       login: { user },
     } = getState()
@@ -99,7 +100,7 @@ export const updateDetailsUser =
   (updatedUser) => async (dispatch, getState) => {
     try {
       dispatch({ type: 'USERUPDATEDETAILS_REQUEST' })
-
+      //Getting token
       const {
         login: { user },
       } = getState()
@@ -126,3 +127,58 @@ export const updateDetailsUser =
       })
     }
   }
+
+export const getAllUsersAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'USERALL_REQUEST' })
+    //Getting token
+    const {
+      login: { user },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+
+    const { data } = await axios.get('/api/users', configuration)
+
+    dispatch({ type: 'USERALL_SUCCESS', payload: data })
+  } catch (error) {
+    dispatch({
+      type: 'USERALL_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}
+
+export const deleteUserAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'DELETEUSER_REQUEST' })
+
+    const {
+      login: { user },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+
+    const { data } = await axios.delete(`/api/users/${id}`, configuration)
+    dispatch({ type: 'DELETEUSER_SUCCESS' })
+  } catch (error) {
+    dispatch({
+      type: 'DELETEUSER_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}

@@ -2,7 +2,7 @@ import express from 'express'
 import asyncHandler from 'express-async-handler'
 import User from '../blueprint/userBlueprint.js'
 import jwt from 'jsonwebtoken'
-import { protect } from '../middleware/authentificationMiddleware.js'
+import { protect, isAdmin } from '../middleware/authentificationMiddleware.js'
 
 const router = express.Router()
 
@@ -11,6 +11,18 @@ const token = (id) => {
     expiresIn: '30d',
   })
 }
+
+//Description: Get all users
+//Route: Get /api/users
+//Access: Private (need token)/Admin (needs admin)
+router.route('').get(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const allUsers = await User.find({})
+    res.json(allUsers)
+  })
+)
 
 //Description: Authentificate user and get token
 //Route: Post /api/users/login
@@ -120,6 +132,24 @@ router.route('/profile').put(
     } else {
       res.status(404)
       throw new Error(`The user doesn't exist`)
+    }
+  })
+)
+
+//Description: Delete a single users
+//Route: DELETE /api/users/:id
+//Access: Private (need token)/Admin (needs admin)
+router.route('/:id').delete(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const singleUser = await User.findById(req.params.id)
+    if (singleUser) {
+      await singleUser.deleteOne({ _id: req.params.id })
+      res.json({ message: 'User deleted successfully' })
+    } else {
+      res.status(404)
+      throw new Error('User not found')
     }
   })
 )

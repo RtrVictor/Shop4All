@@ -53,3 +53,31 @@ export const updateUserDetailsReducer = (state = {}, action) => {
       return state
   }
 }
+
+export const getAllUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case 'USERALL_REQUEST':
+      return { loading: true }
+    case 'USERALL_SUCCESS':
+      return { loading: false, users: action.payload }
+    case 'USERALL_FAIL':
+      return { loading: false, error: action.payload }
+    case 'USERALL_RESET':
+      return { users: [] }
+    default:
+      return state
+  }
+}
+
+export const deleteUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'DELETEUSER_REQUEST':
+      return { loading: true }
+    case 'DELETEUSER_SUCCESS':
+      return { loading: false, success: true }
+    case 'DELETEUSER_FAIL':
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
