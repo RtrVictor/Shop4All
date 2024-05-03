@@ -1,6 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Product from '../blueprint/productBlueprint.js'
+import { protect, isAdmin } from '../middleware/authentificationMiddleware.js'
 
 const router = express.Router()
 
@@ -30,4 +31,24 @@ router.get(
     }
   })
 )
+
+//Description: Delete a single product
+//Route: DELETE /api/products/:id
+//Access: Private (need token)/Admin (needs admin)
+router.route('/:id').delete(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const singleProduct = await Product.findById(req.params.id)
+
+    if (singleProduct) {
+      await singleProduct.deleteOne({ _id: req.params.id })
+      res.json({ message: 'Product deleted successfully' })
+    } else {
+      res.status(404)
+      throw new Error('Product not found')
+    }
+  })
+)
+
 export default router

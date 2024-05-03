@@ -1,10 +1,10 @@
 import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Button, Row, Spinner, Table } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { Button, Spinner, Table } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { deleteUserAction } from '../actions/userActions'
 
-const AdminUserList = ({ loading, users }) => {
+const AdminUserList = ({ loading, users, error }) => {
   const dispatch = useDispatch()
 
   const deleteUser = (id) => {
@@ -17,6 +17,7 @@ const AdminUserList = ({ loading, users }) => {
 
   return (
     <div>
+      {error && <div className='alert-danger py-3 text-center'>{error}</div>}
       {loading && (
         <Spinner animation='border' role='status'>
           <span className='visually-hidden'>Loading...</span>
@@ -25,8 +26,8 @@ const AdminUserList = ({ loading, users }) => {
       <Table striped hover bordered>
         <thead style={{ position: 'sticky', top: '0' }}>
           <tr>
-            <th>ID</th>
             <th>Name</th>
+            <th>ID</th>
             <th>Email address</th>
             <th>Admin</th>
             <th>Management</th>
@@ -36,8 +37,8 @@ const AdminUserList = ({ loading, users }) => {
           {users &&
             users.map((user) => (
               <tr key={user._id}>
-                <td>{user._id}</td>
                 <td>{user.name}</td>
+                <td>{user._id}</td>
                 <td>{user.email}</td>
                 <td>
                   {user.isAdmin ? (
@@ -48,13 +49,16 @@ const AdminUserList = ({ loading, users }) => {
                 </td>
                 <td>
                   <LinkContainer to={`/user/${user._id}/edit`}>
-                    <Button>
+                    <Button className='btn btn-primary'>
                       <i className='fa-solid fa-user-pen'></i>
                     </Button>
                   </LinkContainer>
 
                   <span style={{ marginRight: '5px' }}></span>
-                  <Button variant='danger' onClick={() => deleteUser(user._id)}>
+                  <Button
+                    className='btn btn-danger'
+                    onClick={() => deleteUser(user._id)}
+                  >
                     <i className='fa-solid fa-trash '></i>
                   </Button>
                 </td>
