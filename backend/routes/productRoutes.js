@@ -51,4 +51,56 @@ router.route('/:id').delete(
   })
 )
 
+//Description: Create a single product
+//Route: POST /api/products
+//Access: Private (need token)/Admin (needs admin)
+router.route('/').post(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const createdProduct = new Product({
+      name: 'User Name',
+      price: 0,
+      user: req.user._id,
+      image: '/images/image.jpg',
+      category: 'Product category',
+      brand: 'Product brand',
+      description: 'Product description',
+      countInStock: 0,
+      numReviews: 0,
+    })
+    const newlyCreatedProduct = await createdProduct.save()
+    res.status(201).json(newlyCreatedProduct)
+  })
+)
+
+//Description: Update a single product
+//Route: Put /api/products
+//Access: Private (need token)/Admin (needs admin)
+router.route('/:id').put(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const { name, price, image, category, brand, description, countInStock } =
+      req.body
+
+    const product = await Product.findById(req.params.id)
+    if (product) {
+      product.name = name
+      product.price = price
+      product.image = image
+      product.category = category
+      product.brand = brand
+      product.description = description
+      product.countInStock = countInStock
+
+      const updatedProduct = await product.save()
+      res.json(updatedProduct)
+    } else {
+      res.status(404)
+      throw new Error('Product not found')
+    }
+  })
+)
+
 export default router
