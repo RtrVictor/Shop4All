@@ -14,14 +14,15 @@ const ShoppingCartPriceCard = ({ shoppingCartProducts }) => {
       <Card className='shadow'>
         <div>
           <p>
-            TOTAL OF ITEMS:
+            TOTAL OF ITEMS:{' '}
             {shoppingCartProducts.reduce(
               (acc, cartProduct) => acc + cartProduct.quantity,
               0
-            )}
+            )}{' '}
+            Products
           </p>
           <p>
-            Suma totala:
+            Total:
             {shoppingCartProducts
               .reduce(
                 (acc, cartProduct) =>
@@ -30,7 +31,20 @@ const ShoppingCartPriceCard = ({ shoppingCartProducts }) => {
               )
               .toFixed(2)}
           </p>
-          <p>Cost Livrare</p>
+          <p>
+            Delivery Cost:{' '}
+            {shoppingCartProducts
+              .reduce(
+                (acc, cartProduct) =>
+                  acc + cartProduct.quantity * cartProduct.price,
+                0
+              )
+              .toFixed(2) > 100 ? (
+              '20$'
+            ) : (
+              <span style={{ color: 'green' }}>Free</span>
+            )}
+          </p>
           <Button onClick={onContinue}>Continua</Button>
         </div>
       </Card>
