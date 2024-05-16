@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersAction } from '../actions/userActions'
@@ -12,6 +12,8 @@ import AdminOrderList from '../components/AdminOrderList'
 const AdminPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [initialLoad, setInitialLoad] = useState(true)
 
   const getAllUsers = useSelector((state) => state.getAllUsers)
   const { loading, users, error } = getAllUsers
@@ -48,37 +50,56 @@ const AdminPage = () => {
   useEffect(() => {
     dispatch({ type: 'PRODUCTCREATE_RESET' })
 
-    //User needs to be an admin to see this screen
+    // User needs to be an admin to see this screen
     if (user && user.isAdmin) {
-      if (
-        !users ||
-        users.length === 0 ||
-        updateUserSuccess ||
-        deleteUserSuccess
-      ) {
+      if (initialLoad) {
+        // Fetch users, products, orders only on initial load
         dispatch(getAllUsersAction())
-      }
-      if (createProductSuccess) {
-        navigate(`/product/edit/${createdProduct._id}`)
-      } else if (!products || products.length === 0 || deleteProductSuccess) {
         dispatch(listOfProducts())
-      }
-      if (!orders || orders.length === 0 || deleteOrderSuccess) {
         dispatch(orderListAction())
+        setInitialLoad(false) // Prevent further re-renders due to initial load
+      } else {
+        // Fetch users, products, orders only if certain conditions are met
+        if (
+          !users ||
+          users.length === 0 ||
+          updateUserSuccess ||
+          deleteUserSuccess
+        ) {
+          dispatch(getAllUsersAction())
+        }
+        if (
+          !products ||
+          products.length === 0 ||
+          deleteProductSuccess ||
+          createProductSuccess
+        ) {
+          dispatch(listOfProducts())
+        }
+        if (!orders || orders.length === 0 || deleteOrderSuccess) {
+          dispatch(orderListAction())
+        }
+        if (createProductSuccess && createdProduct) {
+          // Redirect if product creation is successful
+          navigate(`/product/edit/${createdProduct._id}`)
+        }
       }
     } else {
+      // Redirect to login if user is not an admin
       navigate('/login')
     }
   }, [
     dispatch,
     navigate,
     user,
-    deleteOrderSuccess,
+    initialLoad,
+
     updateUserSuccess,
     deleteUserSuccess,
     deleteProductSuccess,
     createProductSuccess,
     createdProduct,
+    deleteOrderSuccess,
   ])
 
   return (

@@ -5,12 +5,25 @@ import Rating from './Rating'
 
 const Product = (props) => {
   return (
-    <Card className='rounded my-3 p-3 shadow'>
-      <Link className='card-title' to={`product/${props.product._id}`}>
-        <Card.Img variant='top' className='rounded' src={props.product.image} />
-      </Link>
+    <Card
+      className='product-card rounded my-3 shadow'
+      style={{ height: '430px' }}
+    >
+      <div
+        style={{ minHeight: '250px', maxHeight: '300px', overflow: 'hidden' }}
+      >
+        <Link to={`product/${props.product._id}`}>
+          <Card.Img
+            variant='top'
+            src={props.product.image}
+            className='rounded-top'
+            style={{ objectFit: 'cover', height: '100%', width: '100%' }}
+          />
+        </Link>
+      </div>
+
       <Card.Body>
-        <Link className='card-title' href={`product/${props.product._id}`}>
+        <Link href={`product/${props.product._id}`} className='card-title'>
           <Card.Title>{props.product.name}</Card.Title>
         </Link>
         <Rating
