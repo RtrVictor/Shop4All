@@ -1,14 +1,23 @@
 import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Button, Row, Spinner, Table } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteProductAction } from '../actions/productActions'
+import { Button, Spinner, Table, Image } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import {
+  deleteProductAction,
+  createProductAction,
+} from '../actions/productActions'
 
-const AdminProductList = ({ loading, products, error }) => {
+const AdminProductList = ({
+  loading,
+  products,
+  error,
+  createProductLoading,
+  createProductError,
+}) => {
   const dispatch = useDispatch()
 
   const createProduct = () => {
-    console.log('Product created')
+    dispatch(createProductAction())
   }
 
   const deleteProduct = (id) => {
@@ -32,6 +41,16 @@ const AdminProductList = ({ loading, products, error }) => {
           <span className='visually-hidden'>Loading...</span>
         </Spinner>
       )}
+
+      {createProductError && (
+        <div className='alert-danger py-3 text-center'>{error}</div>
+      )}
+      {createProductLoading && (
+        <Spinner animation='border' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </Spinner>
+      )}
+
       <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
         <Table striped hover bordered>
           <thead style={{ position: 'sticky', top: '0', zIndex: '1' }}>
@@ -52,7 +71,9 @@ const AdminProductList = ({ loading, products, error }) => {
                 <tr key={product._id}>
                   <td>{product.name}</td>
                   <td>{product._id}</td>
-                  <td>{product.image}</td>
+                  <td>
+                    <Image src={product.image} style={{ maxHeight: '90px' }} />
+                  </td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>${product.price}</td>
@@ -61,7 +82,7 @@ const AdminProductList = ({ loading, products, error }) => {
                     <i className='fa-solid fa-star yellow-icon'></i>
                   </td>
                   <td>
-                    <LinkContainer to={`/product/${product._id}/edit`}>
+                    <LinkContainer to={`/product/edit/${product._id}`}>
                       <Button className='btn btn-primary'>
                         <i className='fa-solid fa-pen-to-square'></i>
                       </Button>

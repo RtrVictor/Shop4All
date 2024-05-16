@@ -5,6 +5,8 @@ import {
   productListReducer,
   productSingleReducer,
   deleteProductReducer,
+  createProductReducer,
+  updateProductReducer,
 } from './reduceres/productReducers'
 import { shoppingCartReducer } from './reduceres/shoppingCartReducers'
 import {
@@ -21,6 +23,8 @@ import {
   detailsOrderReducer,
   payOrderReducer,
   loggedUserOrderReducer,
+  orderListReducer,
+  deleteOrderReducer,
 } from './reduceres/orderReducers'
 
 const reducer = combineReducers({
@@ -39,6 +43,10 @@ const reducer = combineReducers({
   deleteUser: deleteUserReducer,
   updateUser: updateUserReducer,
   deleteProduct: deleteProductReducer,
+  createProduct: createProductReducer,
+  updateProduct: updateProductReducer,
+  orderList: orderListReducer,
+  deleteOrder: deleteOrderReducer,
 })
 const shoppingCartProductsFromLocalStorage = localStorage.getItem(
   'shoppingCartProducts'

@@ -6,6 +6,8 @@ import { Row } from 'react-bootstrap'
 import AdminUserList from '../components/AdminUserList'
 import AdminProductList from '../components/AdminProductList'
 import { listOfProducts } from '../actions/productActions'
+import { orderListAction } from '../actions/orderActions'
+import AdminOrderList from '../components/AdminOrderList'
 
 const AdminPage = () => {
   const dispatch = useDispatch()
@@ -29,7 +31,23 @@ const AdminPage = () => {
   const deleteProduct = useSelector((state) => state.deleteProduct)
   const { success: deleteProductSuccess } = deleteProduct
 
+  const orderList = useSelector((state) => state.orderList)
+  const { loading: orderLoading, orders, error: orderError } = orderList
+
+  const deleteOrder = useSelector((state) => state.deleteOrder)
+  const { success: deleteOrderSuccess } = deleteOrder
+
+  const createProduct = useSelector((state) => state.createProduct)
+  const {
+    loading: createProductLoading,
+    product: createdProduct,
+    success: createProductSuccess,
+    error: createProductError,
+  } = createProduct
+
   useEffect(() => {
+    dispatch({ type: 'PRODUCTCREATE_RESET' })
+
     //User needs to be an admin to see this screen
     if (user && user.isAdmin) {
       if (
@@ -40,8 +58,13 @@ const AdminPage = () => {
       ) {
         dispatch(getAllUsersAction())
       }
-      if (!products || products.length === 0 || deleteProductSuccess) {
+      if (createProductSuccess) {
+        navigate(`/product/edit/${createdProduct._id}`)
+      } else if (!products || products.length === 0 || deleteProductSuccess) {
         dispatch(listOfProducts())
+      }
+      if (!orders || orders.length === 0 || deleteOrderSuccess) {
+        dispatch(orderListAction())
       }
     } else {
       navigate('/login')
@@ -50,9 +73,12 @@ const AdminPage = () => {
     dispatch,
     navigate,
     user,
+    deleteOrderSuccess,
     updateUserSuccess,
     deleteUserSuccess,
     deleteProductSuccess,
+    createProductSuccess,
+    createdProduct,
   ])
 
   return (
@@ -61,20 +87,26 @@ const AdminPage = () => {
       <Row style={{ maxHeight: '250px', overflowY: 'auto' }}>
         <AdminUserList users={users} loading={loading} error={error} />
       </Row>
-      <h3>Table of Products</h3>
 
+      <h3>Table of Products</h3>
       <Row>
         <AdminProductList
           products={products}
           loading={productLoading}
           error={productError}
+          createProductLoading={createProductLoading}
+          createProductError={createProductError}
         />
       </Row>
 
       <h3>Table of Orders</h3>
-      {/* <Row style={{ maxHeight: '250px', overflowY: 'auto' }}>
-        <AdminUserList users={users} />
-      </Row> */}
+      <Row style={{ maxHeight: '250px', overflowY: 'auto' }}>
+        <AdminOrderList
+          orders={orders}
+          loading={orderLoading}
+          error={orderError}
+        />
+      </Row>
     </div>
   )
 }

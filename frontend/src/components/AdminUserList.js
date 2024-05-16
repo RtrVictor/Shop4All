@@ -48,7 +48,7 @@ const AdminUserList = ({ loading, users, error }) => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/user/${user._id}/edit`}>
+                  <LinkContainer to={`/user/edit/${user._id}`}>
                     <Button className='btn btn-primary'>
                       <i className='fa-solid fa-user-pen'></i>
                     </Button>

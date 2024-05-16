@@ -69,3 +69,64 @@ export const deleteProductAction = (id) => async (dispatch, getState) => {
     })
   }
 }
+
+export const createProductAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'PRODUCTCREATE_REQUEST' })
+
+    const {
+      login: { user },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+    //Added empty object {} because we don't actually send anything
+    const { data } = await axios.post('/api/products', {}, configuration)
+    dispatch({ type: 'PRODUCTCREATE_SUCCESS', payload: data })
+  } catch (error) {
+    dispatch({
+      type: 'PRODUCTCREATE_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}
+
+export const updateProductAction =
+  (updatedProduct) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: 'PRODUCTUPDATE_REQUEST' })
+
+      const {
+        login: { user },
+      } = getState()
+
+      const configuration = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+
+      const { data } = await axios.put(
+        `/api/products/${updatedProduct._id}`,
+        updatedProduct,
+        configuration
+      )
+
+      dispatch({ type: 'PRODUCTUPDATE_SUCCESS', payload: data })
+    } catch (error) {
+      dispatch({
+        type: 'PRODUCTUPDATE_FAIL',
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.response,
+      })
+    }
+  }

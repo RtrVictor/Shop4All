@@ -1,7 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Order from '../blueprint/orderBlueprint.js'
-import { protect } from '../middleware/authentificationMiddleware.js'
+import { protect, isAdmin } from '../middleware/authentificationMiddleware.js'
 
 const router = express.Router()
 
@@ -95,6 +95,37 @@ router.route('/:id/payment').put(
 
       const paidOrder = await order.save()
       res.json(paidOrder)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+  })
+)
+
+//Description: Get all the orders
+//Route: PUT /api/orders
+//Access: Private (need token)/Admin (needs admin)
+router.route('/').get(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find({})
+    res.json(orders)
+  })
+)
+
+//Description: Delete a single order
+//Route: DELETE /api/orders/:id
+//Access: Private (need token)/Admin (needs admin)
+router.route('/:id').delete(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const singleOrder = await Order.findById(req.params.id)
+
+    if (singleOrder) {
+      await singleOrder.deleteOne({ _id: req.params.id })
+      res.json({ message: 'Order was deleted' })
     } else {
       res.status(404)
       throw new Error('Order not found')
