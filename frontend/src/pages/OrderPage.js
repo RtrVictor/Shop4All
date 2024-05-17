@@ -19,6 +19,9 @@ const OrderPage = () => {
   const payOrder = useSelector((state) => state.payOrder)
   const { loading: loadPayment, success: successPayment } = payOrder
 
+  const deliveryOrder = useSelector((state) => state.deliveryOrder)
+  const { success: successDelivery } = deliveryOrder
+
   useEffect(() => {
     const payPal = async () => {
       const { data: cid } = await axios.get('/api/config/paypal/payment')
@@ -34,9 +37,10 @@ const OrderPage = () => {
       document.body.appendChild(payPalScript)
     }
 
-    //If we don't have and order load one OR if the payment is successfull load the order again to see isPaid = true
-    if (!order || successPayment) {
+    //If we don't have and order load one OR if the payment is successfull or delivery is successfull load the order again to see isPaid = true/isDelivery = true
+    if (!order || order._id !== id || successPayment || successDelivery) {
       dispatch({ type: 'PAYORDER_RESET' })
+      dispatch({ type: 'DELIVERYORDER_RESET' })
       dispatch(detailsOrderAction(id))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -45,7 +49,7 @@ const OrderPage = () => {
         setPayPalIsReady(true)
       }
     }
-  }, [dispatch, id, successPayment, order])
+  }, [dispatch, id, successPayment, order, successDelivery])
 
   if (!loading) {
     //Prices:

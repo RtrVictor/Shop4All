@@ -39,6 +39,9 @@ const AdminPage = () => {
   const deleteOrder = useSelector((state) => state.deleteOrder)
   const { success: deleteOrderSuccess } = deleteOrder
 
+  const deliveryOrder = useSelector((state) => state.deliveryOrder)
+  const { success: successDelivery } = deliveryOrder
+
   const createProduct = useSelector((state) => state.createProduct)
   const {
     loading: createProductLoading,
@@ -76,7 +79,12 @@ const AdminPage = () => {
         ) {
           dispatch(listOfProducts())
         }
-        if (!orders || orders.length === 0 || deleteOrderSuccess) {
+        if (
+          !orders ||
+          orders.length === 0 ||
+          deleteOrderSuccess ||
+          successDelivery
+        ) {
           dispatch(orderListAction())
         }
         if (createProductSuccess && createdProduct) {
@@ -93,7 +101,7 @@ const AdminPage = () => {
     navigate,
     user,
     initialLoad,
-
+    successDelivery,
     updateUserSuccess,
     deleteUserSuccess,
     deleteProductSuccess,

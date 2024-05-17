@@ -175,3 +175,35 @@ export const deleteOrderAction = (id) => async (dispatch, getState) => {
     })
   }
 }
+
+// Delivery action
+export const deliveryOrderAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: 'DELIVERYORDER_REQUEST' })
+
+    const {
+      login: { user },
+    } = getState()
+
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/orders/${id}/delivery`,
+      {},
+      configuration
+    )
+    dispatch({ type: 'DELIVERYORDER_SUCCESS', payload: data })
+  } catch (error) {
+    dispatch({
+      type: 'DELIVERYORDER_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    })
+  }
+}

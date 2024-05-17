@@ -85,3 +85,18 @@ export const deleteOrderReducer = (state = {}, action) => {
       return state
   }
 }
+// Delivery
+export const deliveryOrderReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'DELIVERYORDER_REQUEST':
+      return { loading: true }
+    case 'DELIVERYORDER_SUCCESS':
+      return { loading: false, success: true }
+    case 'DELIVERYORDER_FAIL':
+      return { loading: false, error: action.payload }
+    case 'DELIVERYORDER_RESET':
+      return {}
+    default:
+      return state
+  }
+}

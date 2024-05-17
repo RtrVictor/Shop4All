@@ -133,4 +133,26 @@ router.route('/:id').delete(
   })
 )
 
+//Description: Change the order to delivery on the way
+//Route: PUT /api/orders/:id/delivery
+//Access: Private
+router.route('/:id/delivery').put(
+  protect,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order) {
+      order.isDelivered = true
+      order.deliveredAt = Date.now()
+
+      const deliveredOrder = await order.save()
+      res.json(deliveredOrder)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
+  })
+)
+
 export default router

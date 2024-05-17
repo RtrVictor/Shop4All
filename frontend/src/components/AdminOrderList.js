@@ -1,10 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Spinner, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { deleteOrderAction } from '../actions/orderActions'
+import { deleteOrderAction, deliveryOrderAction } from '../actions/orderActions'
 
 const AdminOrderList = ({ loading, orders, error }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const deleteOrder = (id) => {
     if (
@@ -12,6 +14,14 @@ const AdminOrderList = ({ loading, orders, error }) => {
     ) {
       dispatch(deleteOrderAction(id))
     }
+  }
+
+  const deliverOrder = (id) => {
+    dispatch(deliveryOrderAction(id))
+  }
+
+  const viewDetails = (id) => {
+    navigate(`/order/${id}`)
   }
 
   return (
@@ -73,6 +83,20 @@ const AdminOrderList = ({ loading, orders, error }) => {
                 </td>
 
                 <td>
+                  <Button
+                    className='btn btn-primary'
+                    onClick={() => viewDetails(order._id)}
+                  >
+                    <i className='fa-solid fa-eye'></i>
+                  </Button>
+                  <span style={{ marginRight: '5px' }}></span>
+                  <Button
+                    className='btn btn-block'
+                    onClick={() => deliverOrder(order._id)}
+                    disabled={!order.isPaid || order.isDelivered}
+                  >
+                    <i className='fa-solid fa-truck'></i>
+                  </Button>
                   <span style={{ marginRight: '5px' }}></span>
                   <Button
                     className='btn btn-danger'
