@@ -2,12 +2,13 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import Form from 'react-bootstrap/Form'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
 import { logoutUser } from '../actions/userActions'
 
-const Header = () => {
+const Header = ({ searchQuery, setSearchQuery }) => {
   const dispatch = useDispatch()
 
   const login = useSelector((state) => state.login)
@@ -20,6 +21,10 @@ const Header = () => {
     dispatch(logoutUser())
   }
 
+  const handleChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
   return (
     <div>
       <Navbar collapseOnSelect expand='lg' className='bg-primary'>
@@ -30,6 +35,13 @@ const Header = () => {
               Shop4All
             </Navbar.Brand>
           </LinkContainer>
+          <Form.Control
+            style={{ borderRadius: '10px', width: '60%' }}
+            type='text'
+            placeholder='Search...'
+            value={searchQuery}
+            onChange={handleChange}
+          ></Form.Control>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>

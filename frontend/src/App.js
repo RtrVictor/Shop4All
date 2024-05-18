@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -17,13 +19,26 @@ import EditUserPage from './pages/EditUserPage'
 import EditProductPage from './pages/EditProductPage'
 
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const productList = useSelector((state) => state.productList)
+  const { products } = productList
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <Router>
-      <Header />
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className='main'>
         <Container>
           <Routes>
-            <Route path='/' element={<HomePage />} exact />
+            <Route
+              path='/'
+              element={<HomePage filteredProducts={filteredProducts} />}
+              exact
+            />
             <Route path='/product/:id' element={<ProductPage />} />
             <Route path='/cart/:id?' element={<ShoppingCartPage />} />
             <Route path='/login' element={<LoginPage />} />

@@ -63,3 +63,34 @@
 .yellow-icon {
   color: rgb(249, 191, 59);
 }
+
+.carousel-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.carousel {
+  width: 80%; /* Adjust width as needed */
+  max-width: 800px; /* Maximum width for the carousel */
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%; /* Ensure the item takes the full height */
+}
+
+.carousel-image {
+  height: 400px; /* Fixed height for the image */
+  width: 100%; /* Maintain aspect ratio */
+  object-fit: cover; /* Cover the area while maintaining aspect ratio */
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
