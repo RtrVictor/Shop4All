@@ -13,7 +13,8 @@ import {
 } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux'
-import { singleProduct } from '../actions/productActions'
+import { singleProduct, createReviewAction } from '../actions/productActions'
+import Reviews from '../components/Reviews'
 
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1)
@@ -52,7 +53,12 @@ const ProductPage = () => {
           </button>
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image
+                src={product.image}
+                alt={product.name}
+                fluid
+                style={{ width: '100%' }}
+              />
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
@@ -152,6 +158,9 @@ const ProductPage = () => {
                 </ListGroup>
               </Card>
             </Col>
+          </Row>
+          <Row>
+            <Reviews product={product} />
           </Row>
         </div>
       )}

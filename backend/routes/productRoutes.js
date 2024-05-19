@@ -103,4 +103,46 @@ router.route('/:id').put(
   })
 )
 
+//Description: Create a new review
+//Route: Put /api/products/reviews/:id
+//Access: Private (need token)
+router.route('/reviews/:id').post(
+  protect,
+  asyncHandler(async (req, res) => {
+    const { comment, rating } = req.body
+
+    const product = await Product.findById(req.params.id) //Find product with url
+    if (product) {
+      const reviewedProduct = product.reviews.find(
+        (review) => review.user.toString() === req.user._id.toString()
+      )
+
+      if (reviewedProduct) {
+        res.status(400)
+        throw new Error('Product already reviewed by user')
+      }
+
+      const review = {
+        user: req.user._id,
+        name: req.user.name,
+        rating: Number(rating),
+        comment: comment,
+      }
+
+      product.reviews.push(review)
+
+      product.numReviews = product.reviews.length
+
+      product.rating =
+        product.reviews.reduce((acc, review) => review.rating + acc, 0) /
+        product.reviews.length
+
+      const successfullyReviewedProduct = await product.save()
+      res.status(201).json(successfullyReviewedProduct)
+    } else {
+      res.status(404)
+      throw new Error('Product not found')
+    }
+  })
+)
 export default router

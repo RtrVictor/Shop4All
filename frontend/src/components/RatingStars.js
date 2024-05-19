@@ -1,16 +1,15 @@
 import React from 'react'
-import { Row } from 'react-bootstrap'
 
-const Rating = (props) => {
+const RatingStars = ({ rating, color }) => {
   return (
-    <div className='rating'>
+    <div style={{ padding: '0' }}>
       <span>
         <i
-          style={{ color: props.color }}
+          style={{ color: color }}
           className={
-            props.rating >= 1
+            rating >= 1
               ? 'fa-solid fa-star'
-              : props.rating >= 0.5
+              : rating >= 0.5
               ? 'fa-solid fa-star-half-stroke'
               : 'fa-regular fa-star'
           }
@@ -18,11 +17,11 @@ const Rating = (props) => {
       </span>
       <span>
         <i
-          style={{ color: props.color }}
+          style={{ color: color }}
           className={
-            props.rating >= 2
+            rating >= 2
               ? 'fa-solid fa-star'
-              : props.rating >= 1.5
+              : rating >= 1.5
               ? 'fa-solid fa-star-half-stroke'
               : 'fa-regular fa-star'
           }
@@ -30,11 +29,11 @@ const Rating = (props) => {
       </span>
       <span>
         <i
-          style={{ color: props.color }}
+          style={{ color: color }}
           className={
-            props.rating >= 3
+            rating >= 3
               ? 'fa-solid fa-star'
-              : props.rating >= 2.5
+              : rating >= 2.5
               ? 'fa-solid fa-star-half-stroke'
               : 'fa-regular fa-star'
           }
@@ -42,11 +41,11 @@ const Rating = (props) => {
       </span>
       <span>
         <i
-          style={{ color: props.color }}
+          style={{ color: color }}
           className={
-            props.rating >= 4
+            rating >= 4
               ? 'fa-solid fa-star'
-              : props.rating >= 3.5
+              : rating >= 3.5
               ? 'fa-solid fa-star-half-stroke'
               : 'fa-regular fa-star'
           }
@@ -54,25 +53,18 @@ const Rating = (props) => {
       </span>
       <span>
         <i
-          style={{ color: props.color }}
+          style={{ color: color }}
           className={
-            props.rating >= 5
+            rating >= 5
               ? 'fa-solid fa-star'
-              : props.rating >= 4.5
+              : rating >= 4.5
               ? 'fa-solid fa-star-half-stroke'
               : 'fa-regular fa-star'
           }
         ></i>
       </span>
-      {props.page === 'productPage' ? (
-        <Row className='rating d-flex flex-column align-items-center justify-content-center'>
-          {props.value} reviews
-        </Row>
-      ) : (
-        <span>{props.value} ratings</span>
-      )}
     </div>
   )
 }
 
-export default Rating
+export default RatingStars

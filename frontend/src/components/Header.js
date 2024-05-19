@@ -35,13 +35,30 @@ const Header = ({ searchQuery, setSearchQuery }) => {
               Shop4All
             </Navbar.Brand>
           </LinkContainer>
-          <Form.Control
-            style={{ borderRadius: '10px', width: '60%' }}
-            type='text'
-            placeholder='Search...'
-            value={searchQuery}
-            onChange={handleChange}
-          ></Form.Control>
+          <div style={{ position: 'relative', width: '60%' }}>
+            <Form.Control
+              style={{
+                borderRadius: '10px',
+                width: '100%',
+                paddingRight: '40px',
+              }}
+              type='text'
+              placeholder='Search...'
+              value={searchQuery}
+              onChange={handleChange}
+            ></Form.Control>
+            <i
+              className='fa fa-search'
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                pointerEvents: 'none',
+                color: '#aaa',
+              }}
+            ></i>
+          </div>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>
