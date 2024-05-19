@@ -138,7 +138,7 @@ export const createReviewAction =
 
       const {
         login: { user },
-      } = getState
+      } = getState()
 
       const configuration = {
         headers: {

@@ -1,10 +1,19 @@
 import React from 'react'
 import Rating from './Rating'
 import UserReview from './UserReview'
+import ReviewForm from './ReviewForm'
 import { Row, Col, ProgressBar, Button } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 
-const Reviews = ({ product }) => {
+const Reviews = ({
+  product,
+  rating,
+  comment,
+  setRating,
+  setComment,
+  showForm,
+  showReviewForm,
+}) => {
   const location = useLocation()
   const currentPage = location.pathname.includes('product')
     ? 'productPage'
@@ -32,6 +41,18 @@ const Reviews = ({ product }) => {
   return (
     <div>
       <Row style={{ display: 'inline' }}>
+        {showReviewForm ? (
+          <ReviewForm
+            showForm={showForm}
+            product={product}
+            rating={rating}
+            comment={comment}
+            setRating={setRating}
+            setComment={setComment}
+          />
+        ) : (
+          ''
+        )}
         <h2 style={{ fontWeight: 'bold' }}>Reviews</h2>
         {product.numReviews === 0 ? (
           ' (No one reviewed this product :('
@@ -123,7 +144,11 @@ const Reviews = ({ product }) => {
           </Row>
           <Row>
             <span>
-              <Button className='btn btn-block' style={{ width: '30%' }}>
+              <Button
+                className='btn btn-block'
+                style={{ width: '30%' }}
+                onClick={showForm}
+              >
                 Add a review
               </Button>
             </span>

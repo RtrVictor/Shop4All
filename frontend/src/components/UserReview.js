@@ -3,8 +3,6 @@ import RatingStars from './RatingStars'
 import { Row, Col } from 'react-bootstrap'
 
 const UserReview = ({ reviews }) => {
-  console.log(reviews)
-
   const getInitials = (name) => {
     const words = name.split(' ')
     let initials = ''
@@ -16,11 +14,17 @@ const UserReview = ({ reviews }) => {
     return initials
   }
 
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF'
+  const getRandomColor = (name) => {
+    // Generate a numeric hash based on the user's name
+    let hash = 0
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    // Convert the hash to a hex color
     let color = '#'
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff
+      color += ('00' + value.toString(16)).substr(-2)
     }
     return color
   }
@@ -33,7 +37,7 @@ const UserReview = ({ reviews }) => {
           <Col className='col-4'>
             <Col
               className='circle'
-              style={{ backgroundColor: getRandomColor() }}
+              style={{ backgroundColor: getRandomColor(review.name) }}
             >
               {getInitials(review.name)}
             </Col>

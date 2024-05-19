@@ -13,11 +13,14 @@ import {
 } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux'
-import { singleProduct, createReviewAction } from '../actions/productActions'
+import { singleProduct } from '../actions/productActions'
 import Reviews from '../components/Reviews'
 
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [showReviewForm, setShowReviewForm] = useState(false)
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -26,9 +29,23 @@ const ProductPage = () => {
   const productSingle = useSelector((state) => state.productSingle)
   const { loading, product, error } = productSingle
 
+  const createReview = useSelector((state) => state.createReview)
+  const { success: successReview } = createReview
+
+  const showForm = () => {
+    setShowReviewForm(!showReviewForm)
+  }
+
   useEffect(() => {
+    if (successReview) {
+      alert('Review added')
+      setRating(0)
+      setComment('')
+      dispatch({ type: 'CREATEREVIEW_RESET' })
+      setShowReviewForm(false)
+    }
     dispatch(singleProduct(id))
-  }, [id, dispatch])
+  }, [id, dispatch, successReview])
 
   const goBack = () => {
     navigate(-1)
@@ -160,7 +177,15 @@ const ProductPage = () => {
             </Col>
           </Row>
           <Row>
-            <Reviews product={product} />
+            <Reviews
+              showReviewForm={showReviewForm}
+              showForm={showForm}
+              product={product}
+              rating={rating}
+              setRating={setRating}
+              comment={comment}
+              setComment={setComment}
+            />
           </Row>
         </div>
       )}
