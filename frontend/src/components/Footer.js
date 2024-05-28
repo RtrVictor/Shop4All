@@ -7,7 +7,8 @@ const Footer = () => {
       <Container>
         <Row>
           <Col className='text-center py-2'>
-            Copyright &copy; Shop4All Rotaru Victor
+            Copyright &copy; 2024 Shop4All™ Rotaru Victor, Inc. All rights
+            reserved.
           </Col>
         </Row>
       </Container>

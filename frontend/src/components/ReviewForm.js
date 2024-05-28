@@ -45,20 +45,48 @@ const ReviewForm = ({
             </Row>
             <Form onSubmit={submitReview}>
               <Form.Group className='mb-3' controlId='rating'>
-                <Form.Label>Rating</Form.Label>
+                <Form.Label>Rating: {rating}</Form.Label>
                 <Form.Control
-                  as='select'
+                  type='range'
                   value={rating}
-                  placeholder='Select rating'
+                  min='1'
+                  max='5'
+                  step='1'
                   onChange={(e) => setRating(e.target.value)}
-                >
-                  <option value=''>Select...</option>
-                  <option value='1'>1-Poor</option>
-                  <option value='2'>2-Fair...</option>
-                  <option value='3'>3-Average...</option>
-                  <option value='4'>4-Very Good...</option>
-                  <option value='5'>5-Excelent...</option>
-                </Form.Control>
+                />
+                <div className='range-labels d-flex justify-content-between mt-2'>
+                  <span style={{ position: 'absolute', left: '0%' }}>Poor</span>
+                  <span style={{ position: 'absolute', left: '25%' }}>
+                    Fair
+                  </span>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                    }}
+                  >
+                    Average
+                  </span>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '75%',
+                      transform: 'translateX(-50%)',
+                    }}
+                  >
+                    Very Good
+                  </span>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '100%',
+                      transform: 'translateX(-100%)',
+                    }}
+                  >
+                    Excellent
+                  </span>
+                </div>
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicComment'>
                 <Form.Label>Comment</Form.Label>
@@ -69,7 +97,9 @@ const ReviewForm = ({
                   onChange={(e) => setComment(e.target.value)}
                 />
               </Form.Group>
-              <Button type='submit'>Add Review</Button>
+              <Button type='submit' disabled={rating === 0}>
+                Add Review
+              </Button>
             </Form>
           </div>
         ) : (

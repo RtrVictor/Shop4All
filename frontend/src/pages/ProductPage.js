@@ -74,7 +74,12 @@ const ProductPage = () => {
                 src={product.image}
                 alt={product.name}
                 fluid
-                style={{ width: '100%' }}
+                style={{
+                  width: '100%',
+                  maxHeight: '506.81px',
+                  maxWidth: '636px',
+                  objectFit: 'contain',
+                }}
               />
             </Col>
             <Col md={3}>
@@ -101,7 +106,7 @@ const ProductPage = () => {
                   <ListGroupItem>
                     <Row>
                       <Col>Price:</Col>
-                      <Col>{product.price}</Col>
+                      <Col>${(product.price * quantity).toFixed(2)}</Col>
                     </Row>
                   </ListGroupItem>
                   <ListGroupItem>
@@ -159,7 +164,7 @@ const ProductPage = () => {
                       <Col className='d-flex justify-content-center'>
                         {
                           <Button
-                            disabled={product.countInStock === 0}
+                            disabled
                             className={`btn-block btn-info${
                               product.countInStock === 0 ? 'btn-dark' : ''
                             }`}

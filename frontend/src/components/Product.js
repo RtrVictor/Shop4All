@@ -32,7 +32,14 @@ const Product = (props) => {
           color='#F9BF3B'
         />
         <div className='my-3'>
-          <Card.Text>${props.product.price}</Card.Text>
+          <Card.Text>
+            ${props.product.price} -
+            {props.product.countInStock > 0 ? (
+              <span>avalabile</span>
+            ) : (
+              <span style={{ color: 'darkgrey' }}>unavalabile</span>
+            )}
+          </Card.Text>
         </div>
       </Card.Body>
     </Card>

@@ -129,3 +129,15 @@
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.range-labels {
+  width: 100%;
+  position: relative;
+  height: 20px; /* Adjust as needed */
+  margin-top: 10px;
+}
+
+.range-labels span {
+  font-size: 0.9em;
+  white-space: nowrap;
+}

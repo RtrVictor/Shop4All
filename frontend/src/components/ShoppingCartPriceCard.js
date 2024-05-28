@@ -39,7 +39,7 @@ const ShoppingCartPriceCard = ({ shoppingCartProducts }) => {
                   acc + cartProduct.quantity * cartProduct.price,
                 0
               )
-              .toFixed(2) > 100 ? (
+              .toFixed(2) < 100 ? (
               '20$'
             ) : (
               <span style={{ color: 'green' }}>Free</span>
