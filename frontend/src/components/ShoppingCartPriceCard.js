@@ -13,6 +13,7 @@ const ShoppingCartPriceCard = ({ shoppingCartProducts }) => {
     <div>
       <Card className='shadow'>
         <div>
+          <p>Order summary:</p>
           <p>
             TOTAL OF ITEMS:{' '}
             {shoppingCartProducts.reduce(

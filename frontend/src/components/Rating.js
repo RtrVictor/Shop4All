@@ -69,7 +69,7 @@ const Rating = (props) => {
           {props.value} reviews
         </Row>
       ) : (
-        <span>{props.value} ratings</span>
+        <span>{props.value} reviews</span>
       )}
     </div>
   )

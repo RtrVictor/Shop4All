@@ -90,7 +90,8 @@ const ProductPage = () => {
                 <ListGroupItem>
                   <Rating
                     rating={product.rating}
-                    value={`${product.numReviews} reviews`}
+                    value={`${product.numReviews}`}
+                    color='#F9BF3B'
                   />
                 </ListGroupItem>
                 <ListGroupItem>Price: ${product.price}</ListGroupItem>
