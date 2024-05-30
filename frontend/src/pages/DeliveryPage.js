@@ -38,6 +38,7 @@ const DeliveryPage = () => {
         <Form.Group controlId='address'>
           <Form.Label>Address</Form.Label>
           <Form.Control
+            required
             type='text'
             placeholder='Add Address'
             value={address}
@@ -48,6 +49,7 @@ const DeliveryPage = () => {
         <Form.Group controlId='city'>
           <Form.Label>City</Form.Label>
           <Form.Control
+            required
             type='text'
             placeholder='Add City'
             value={city}
@@ -58,6 +60,7 @@ const DeliveryPage = () => {
         <Form.Group controlId='country'>
           <Form.Label>Country</Form.Label>
           <Form.Control
+            required
             type='text'
             placeholder='Add Country'
             value={country}
@@ -68,6 +71,7 @@ const DeliveryPage = () => {
         <Form.Group controlId='postalCode'>
           <Form.Label>Postal Code</Form.Label>
           <Form.Control
+            required
             type='text'
             placeholder='Add Postal Code'
             value={postalCode}
