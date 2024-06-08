@@ -59,7 +59,7 @@ router.route('/').post(
   isAdmin,
   asyncHandler(async (req, res) => {
     const createdProduct = new Product({
-      name: 'User Name',
+      name: 'Product Name',
       price: 0,
       user: req.user._id,
       image: '/images/image.jpg',

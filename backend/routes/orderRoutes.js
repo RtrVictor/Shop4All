@@ -74,7 +74,7 @@ router.route('/:id').get(
   })
 )
 
-//Description: Change the order to paied
+//Description: Change the order to paid
 //Route: PUT /api/orders/:id/payment
 //Access: Private
 router.route('/:id/payment').put(
